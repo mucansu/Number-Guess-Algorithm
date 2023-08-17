@@ -4,22 +4,33 @@ test_numbers = 100
 min_num = 1
 max_num = 100
 
+# List to keep track of past secret numbers
+past_secrets = []
+
 
 def automated_guesser(secret_number):
     # Initialize the range
     low, high = min_num, max_num
     attempts = 0
 
+    if past_secrets:
+        guess = sum(past_secrets) // len(past_secrets)
+    else:
+        guess = (low + high) // 2
+
     while low <= high:
-        guess = (low + high) // 2  # Choose the middle value
         attempts += 1
 
         if guess == secret_number:
+            past_secrets.append(secret_number)  # update past secrets list
             return attempts, True
         elif guess < secret_number:
             low = guess + 1
         else:
             high = guess - 1
+
+        guess = (low + high) // 2
+    past_secrets.append(secret_number)
     return attempts, False
 
 
